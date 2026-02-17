@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-// export const Baseurl = 'http://localhost:3000'
-export const Baseurl='https://hireme-i1re.onrender.com'
+export const Baseurl = 'http://localhost:3000'
+// export const Baseurl='https://hireme-i1re.onrender.com'
 
 const api = axios.create({
   baseURL: Baseurl,
@@ -71,8 +71,12 @@ export interface CompanyJobsResponse {
 export const getCompanyJobsWithApplicants = () =>
   api.get<CompanyJobsResponse>('/applications/company/jobs')
 
-export const updateApplicationStatus = (applicationId: string, status: string) =>
-  api.patch(`/applications/${applicationId}/status`, { status })
+export const updateApplicationStatus = (
+  applicationId: string,
+  status: string,
+  notes?: string
+) =>
+  api.patch(`/applications/${applicationId}/status`, { status, notes })
 
 // Employee types
 export interface Employee {
@@ -92,5 +96,41 @@ export interface EmployeesResponse {
 
 export const getCompanyEmployees = () =>
   api.get<EmployeesResponse>('/employees/company')
+
+// User Application types
+export interface ApplicationCompany {
+  id: string
+  name: string
+  logo: string
+}
+
+export interface ApplicationJob {
+  id: string
+  title: string
+  description: string
+  location: string
+  salary: number
+  jobType: string
+  jobCategory: string
+  lastDateToApply: string
+  company: ApplicationCompany
+}
+
+export interface UserApplication {
+  id: string
+  status: string
+  formResponse: Record<string, string>
+  testAnswered: boolean
+  totalquestions: number
+  correctedanswers: string[]
+  incorrectanswers: string[]
+  createdAt: string
+  updatedAt: string
+  job: ApplicationJob
+  form: { id: string }
+}
+
+export const getUserApplications = () =>
+  api.get<UserApplication[]>('/user/applications')
 
 export default api

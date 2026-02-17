@@ -11,6 +11,8 @@ function InterviewedStudents() {
   const [error, setError] = useState<string | null>(null)
   const [selectedJob, setSelectedJob] = useState<JobWithApplicants | null>(null)
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null)
+  const [noteInputs, setNoteInputs] = useState<Record<string, string>>({})
+  const [savedNotes, setSavedNotes] = useState<Record<string, string[]>>({})
 
   useEffect(() => {
     fetchJobs()
@@ -62,7 +64,9 @@ function InterviewedStudents() {
   const handleStatusChange = async (applicationId: string, newStatus: string) => {
     setUpdatingStatus(applicationId)
     try {
-      await updateApplicationStatus(applicationId, newStatus)
+      // Pass the latest note for this applicationId if any
+      const notes = savedNotes[applicationId]?.[savedNotes[applicationId].length - 1] || ''
+      await updateApplicationStatus(applicationId, newStatus, notes)
       // Update local state
       if (selectedJob) {
         const updatedApplicants = selectedJob.applicants.map((app) =>
@@ -80,6 +84,21 @@ function InterviewedStudents() {
     } finally {
       setUpdatingStatus(null)
     }
+  }
+
+  const handleNoteChange = (applicationId: string, value: string) => {
+    setNoteInputs((prev) => ({ ...prev, [applicationId]: value }))
+  }
+
+  const handleAddNote = (applicationId: string) => {
+    const noteText = noteInputs[applicationId]?.trim()
+    if (!noteText) return
+
+    setSavedNotes((prev) => ({
+      ...prev,
+      [applicationId]: [...(prev[applicationId] || []), noteText],
+    }))
+    setNoteInputs((prev) => ({ ...prev, [applicationId]: '' }))
   }
 
   if (loading) {
@@ -223,6 +242,37 @@ function InterviewedStudents() {
                         Applied {formatDate(applicant.appliedAt)}
                       </p>
                     </div>
+                  </div>
+
+                  {/* Notes Section */}
+                  <div className="mt-4 border-t border-slate-200 pt-4">
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={noteInputs[applicant.applicationId] || ''}
+                        onChange={(e) => handleNoteChange(applicant.applicationId, e.target.value)}
+                        placeholder="Add a note..."
+                        className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                      />
+                      <button
+                        onClick={() => handleAddNote(applicant.applicationId)}
+                        className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      >
+                        Add Note
+                      </button>
+                    </div>
+                    {savedNotes[applicant.applicationId] && savedNotes[applicant.applicationId].length > 0 && (
+                      <div className="mt-3 space-y-2">
+                        {savedNotes[applicant.applicationId].map((note, index) => (
+                          <div
+                            key={index}
+                            className="rounded-lg bg-yellow-50 border border-yellow-200 px-3 py-2 text-sm text-slate-700"
+                          >
+                            {note}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}

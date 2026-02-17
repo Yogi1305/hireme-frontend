@@ -15,6 +15,7 @@ import InterviewedStudents from './pages/dashboard/InterviewedStudents.tsx'
 import Employees from './pages/dashboard/Employees.tsx'
 import Jobs from './pages/Jobs.tsx'
 import Profile from './pages/Profile.tsx'
+import AppliedJobs from './pages/AppliedJobs.tsx'
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: 'jobs', element: <Jobs /> },
+      { path: 'applied-jobs', element: <AppliedJobs /> },
       { path: 'employeer', element: <Employeer /> },
       { path: 'login', element: <Login /> },
       { path: 'register', element: <Register /> },
