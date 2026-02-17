@@ -32,6 +32,11 @@ function Navbar() {
             </NavLink>
           </li>
           <li>
+            <NavLink to="/profile" className={navItemClass}>
+              Profile
+            </NavLink>
+          </li>
+          <li>
             <NavLink to="/login" className={navItemClass}>
               Login
             </NavLink>
