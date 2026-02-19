@@ -154,13 +154,13 @@ function Jobs() {
         </button>
       </div>
 
-      {jobs.length === 0 ? (
+      {jobs.filter((job) => job.isPublic).length === 0 ? (
         <div className="rounded-lg border border-slate-200 bg-white p-12 text-center">
-          <p className="text-slate-500">No jobs available at the moment.</p>
+          <p className="text-slate-500">No public jobs available at the moment.</p>
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {jobs.map((job) => (
+          {jobs.filter((job) => job.isPublic).map((job) => (
             <JobCard key={job.id} job={job} onApply={handleApply} />
           ))}
         </div>
