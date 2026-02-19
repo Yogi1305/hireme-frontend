@@ -1,3 +1,8 @@
+// Add an existing question to a test
+export const addExistingQuestionToTest = async (testId: string, questionId: string) => {
+  const res = await api.post(`/questions/tests/${testId}/add-existing/${questionId}`);
+  return res.data;
+};
 // Question Set types
 export interface Question {
   questionText: string;

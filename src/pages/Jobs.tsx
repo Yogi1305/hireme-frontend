@@ -49,6 +49,7 @@ export interface Job {
   jobCategory: string
   duration: string
   lastDateToApply: string
+  isPublic: boolean
   companyId: string
   test?: JobTest
   form?: JobForm

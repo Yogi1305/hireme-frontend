@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import type { FormEvent } from 'react'
 import axios from 'axios'
+
 import api from '../../../api'
+import ImportQuestions from './ImportQuestions'
 
 interface Job {
   id: string
@@ -36,6 +38,7 @@ function CreateQuestionForm() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
+  const [showImport, setShowImport] = useState(false)
 
   // Fetch tests on mount
   useEffect(() => {
@@ -90,10 +93,7 @@ function CreateQuestionForm() {
 
   const handleCreateQuestion = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!selectedTest) {
-      setError('No test selected')
-      return
-    }
+    if (!selectedTest) return
     if (questionOptions.length < 2) {
       setError('Please add at least 2 options')
       return
@@ -235,6 +235,18 @@ function CreateQuestionForm() {
             <p className="font-mono text-xs text-slate-700">{selectedTest.id}</p>
           </div>
         </div>
+      </div>
+
+      {/* Import Questions Button */}
+      <div className="mt-4">
+        <button
+          type="button"
+          className="mb-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded"
+          onClick={() => setShowImport((prev) => !prev)}
+        >
+          {showImport ? 'Hide Import Questions' : 'Import Questions'}
+        </button>
+        {showImport && <ImportQuestions testId={selectedTest.id} />}
       </div>
 
       {/* Error/Success Messages */}
