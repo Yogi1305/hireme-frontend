@@ -6,6 +6,7 @@ const sidebarItems = [
   { to: '/dashboard/applied-students', label: 'Applied Students' },
   { to: '/dashboard/interviewed-students', label: 'Interviewed Students' },
   { to: '/dashboard/employees', label: 'Employees' },
+  { to: '/dashboard/questionbank', label: 'Question Bank' },
 ]
 
 function Dashboard() {

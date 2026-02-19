@@ -1,4 +1,5 @@
-import { StrictMode } from 'react'
+import React, { StrictMode, Suspense, lazy } from 'react'
+const QuestionBankPage = lazy(() => import('./pages/dashboard/QuestionBankPage'));
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
           { path: 'applied-students', element: <AppliedStudents /> },
           { path: 'interviewed-students', element: <InterviewedStudents /> },
           { path: 'employees', element: <Employees /> },
+          { path: 'questionbank', element: <Suspense fallback={<div>Loading...</div>}><QuestionBankPage /></Suspense> },
         ],
       },
     ],

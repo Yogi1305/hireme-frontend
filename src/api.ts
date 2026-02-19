@@ -1,3 +1,43 @@
+// Question Set types
+export interface Question {
+  questionText: string;
+  options: string[];
+  correctAnswer: string;
+}
+
+export interface QuestionSet {
+  id: string;
+  setName: string;
+  questions: Question[];
+}
+
+// Create a QuestionSet
+export const createQuestionSet = async (setName: string) => {
+  const res = await api.post('/questionset', { setName });
+  return res.data;
+};
+
+// Fetch all QuestionSets with questions
+export const fetchAllQuestionSets = async (): Promise<QuestionSet[]> => {
+  const res = await api.get('/questionset');
+  return res.data;
+};
+
+// Fetch a single QuestionSet with questions
+export const fetchQuestionSet = async (id: string): Promise<QuestionSet> => {
+  const res = await api.get(`/questionset/${id}`);
+  return res.data;
+};
+
+// Add a question to a QuestionSet
+export const addQuestionToSet = async (
+  setId: string,
+  question: Question
+) => {
+  // Use setId (UUID) in the endpoint as per backend API
+  const res = await api.post(`/questionset/${setId}/question`, question);
+  return res.data;
+};
 import axios from 'axios'
 
 export const Baseurl = 'http://localhost:3000'
