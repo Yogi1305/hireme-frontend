@@ -45,8 +45,8 @@ export const addQuestionToSet = async (
 };
 import axios from 'axios'
 
-export const Baseurl = 'http://localhost:3000'
-// export const Baseurl='https://hireme-i1re.onrender.com'
+// export const Baseurl = 'http://localhost:3000'
+export const Baseurl='https://hireme-i1re.onrender.com'
 
 const api = axios.create({
   baseURL: Baseurl,
